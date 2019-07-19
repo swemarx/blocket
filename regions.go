@@ -3,13 +3,12 @@ package main
 import (
 	"fmt"
 	"time"
-	"strconv"
+	"strings"
 	"github.com/gocolly/colly"
 )
 
 type region struct {
 	name string
-	id uint64
 	uri string
 }
 
@@ -26,7 +25,7 @@ func refreshRegions(uri string) {
 
 	// DEBUG
 	for _, reg := range regList.list {
-		fmt.Printf("Name: %s Id: %d Uri: %s\n", reg.name, reg.id, reg.uri)
+		fmt.Printf("name: %s, uri: %s\n", reg.name, reg.uri)
 	}
 }
 
@@ -43,18 +42,15 @@ func scrapeRegions(uri string) {
 }
 
 func forEachRegion(e *colly.HTMLElement) {
-	name := e.Text
 	uri  := e.Attr("href")
-	ids  := e.Attr("data-region")
-	fmt.Printf("Found matching region name=%s, uri=%s, id=%s\n", name, uri, ids)
-
-	// Parse region-id
-	id, err := strconv.ParseUint(ids, 10, 64)
-	if err != nil {
-		fmt.Println("Could not parse region-id")
+	// Check if the region has subregions, need to scrape that page instead.
+	if strings.HasSuffix(uri, ".htm") {
+		scrapeSubRegions(uri)
 		return
 	}
-	regList.list = append(regList.list, region{name: name, id: id, uri: uri})
+	name := e.Text
+	fmt.Printf("Found matching region name=%s, uri=%s\n", name, uri)
+	regList.list = append(regList.list, region{name: name, uri: uri})
 }
 
 /*
@@ -73,3 +69,21 @@ func areCategoriesFresh(maxAge int) bool {
 	return true
 }
 */
+
+func scrapeSubRegions(uri string) {
+	fmt.Println("scrapeSubRegions(): entering")
+
+	// Scrape 'em
+	c := colly.NewCollector()
+	c.OnHTML("body > div > a", forEachSubRegion)
+	c.Visit(uri)
+	regList.lastUpdated = time.Now().Unix()
+}
+
+func forEachSubRegion(e *colly.HTMLElement) {
+	uri  := e.Attr("href")
+	name := strings.TrimSpace(e.Text)
+	fmt.Printf("Found matching region name=%s, uri=%s\n", name, uri)
+	regList.list = append(regList.list, region{name: name, uri: uri})
+}
+
