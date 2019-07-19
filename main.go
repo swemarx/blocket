@@ -1,21 +1,30 @@
 package main
 
 import (
-	//"log"
 	//"os"
+	//"fmt"
+	//"time"
 )
 
-const uri = "https://www.blocket.se/stockholm?ca=11"
-const filePath = "./data"
-const maxAge = 600
+const categoriesUri = "https://www.blocket.se/stockholm?ca=11"
+const regionsUri = "https://www.blocket.se/"
+const maxAge = 10	// seconds
 const listenPort = 666
 
 func main() {
-	// TODO: check if cache exists and is not stale
-	if !isCacheFresh(filePath, maxAge) {
-		updateCache(uri, filePath)
-	}
+	refreshCategories(categoriesUri)
+	refreshRegions(regionsUri)
 
-	// TODO: launch service listening to listenPort
+	/*
+	for {
+		if !areCategoriesFresh(maxAge) {
+			fmt.Printf("Categories stale, refreshing!\n")
+			refreshCategories(categoriesUri)
+			break
+		}
+		time.Sleep(1 * time.Second)
+	}
+	*/
+
 	startServer(listenPort)
 }
