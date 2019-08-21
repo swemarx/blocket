@@ -21,7 +21,7 @@ func startHttpServer(listenPort int) {
 			Categories []category
 			Regions    []region
 		}{
-			SiteName:   siteName,
+			SiteName:   config.Sitename,
 			PageTitle:  "Blocko Loco",
 			Categories: catList.list,
 			Regions:    regList.list,

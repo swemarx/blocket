@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"github.com/gocolly/colly"
 	"strings"
 	"time"
+
+	"github.com/gocolly/colly"
 )
 
 type region struct {
@@ -20,23 +20,22 @@ type regions struct {
 var regList = regions{}
 
 func refreshRegions(uri string) {
-	fmt.Println("refreshRegions(): entering")
 	scrapeRegions(uri)
 
+	/*
 	// DEBUG
 	fmt.Printf("Discovered regions:\n")
 	for _, reg := range regList.list {
 		fmt.Printf("name: %s, uri: %s\n", reg.Name, reg.uri)
 	}
+	*/
 }
 
 func scrapeRegions(uri string) {
-	fmt.Println("scrapeRegions(): entering")
-
 	regList.list = nil
 
 	// Scrape 'em
-	c := colly.NewCollector(colly.UserAgent(userAgent))
+	c := colly.NewCollector(colly.UserAgent(config.Useragent))
 	c.OnHTML("ul.regionslist > li > a", forEachRegion)
 	c.Visit(uri)
 	regList.lastUpdated = time.Now().Unix()
@@ -55,10 +54,8 @@ func forEachRegion(e *colly.HTMLElement) {
 }
 
 func scrapeSubRegions(uri string) {
-	fmt.Println("scrapeSubRegions(): entering")
-
 	// Scrape 'em
-	c := colly.NewCollector(colly.UserAgent(userAgent))
+	c := colly.NewCollector(colly.UserAgent(config.Useragent))
 	c.OnHTML("body > div > a", forEachSubRegion)
 	c.Visit(uri)
 	regList.lastUpdated = time.Now().Unix()

@@ -6,27 +6,25 @@ import (
 //"time"
 )
 
-const siteName = "Blocko Loco"
-const userAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 Safari/537.36"
-const categoriesUri = "https://www.blocket.se/stockholm?ca=11"
-const regionsUri = "https://www.blocket.se/"
-const maxAge = 10 // seconds
-const listenPort = 8081
+const configFilename = "config.toml"
+var config Config
 
 func main() {
-	refreshCategories(categoriesUri)
-	refreshRegions(regionsUri)
+	config = ReadConfig(configFilename)
+
+	refreshCategories(config.CategoriesUri)
+	refreshRegions(config.RegionsUri)
 
 	/*
 		for {
-			if !areCategoriesFresh(maxAge) {
+			if !areCategoriesFresh(config.MaxAge) {
 				fmt.Printf("Categories stale, refreshing!\n")
-				refreshCategories(categoriesUri)
+				refreshCategories(config.CategoriesUri)
 				break
 			}
 			time.Sleep(1 * time.Second)
 		}
 	*/
 
-	startHttpServer(listenPort)
+	startHttpServer(int(config.Port))
 }

@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gocolly/colly"
-	"strconv"
 	"time"
+	"strconv"
+
+	"github.com/gocolly/colly"
 )
 
 type category struct {
@@ -20,24 +21,23 @@ type categories struct {
 var catList = categories{}
 
 func refreshCategories(uri string) {
-	fmt.Println("updateCache(): entering")
 	scrapeCategories(uri)
 
+	/*
 	// DEBUG
 	fmt.Printf("Discovered categories:\n")
 	for _, cat := range catList.list {
 		fmt.Printf("name: %s id: %d\n", cat.Name, cat.Id)
 	}
+	*/
 }
 
 func scrapeCategories(uri string) {
-	fmt.Println("scrapeCategories(): entering")
-
 	// Clear out catList.list-slice
 	catList.list = nil
 
 	// Scrape 'em
-	c := colly.NewCollector(colly.UserAgent(userAgent))
+	c := colly.NewCollector(colly.UserAgent(config.Useragent))
 	c.OnHTML("select.search_category > option", forEachCategory)
 	c.Visit(uri)
 	catList.lastUpdated = time.Now().Unix()
@@ -67,7 +67,6 @@ func forEachCategory(e *colly.HTMLElement) {
 }
 
 func areCategoriesFresh(maxAge int) bool {
-	fmt.Println("areCategoriesFresh(): entering")
 	//fi, err := os.Stat(filePath)
 	//if err != nil {
 	//	return false
