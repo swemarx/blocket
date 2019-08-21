@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>{{.SiteName}}</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="assets/normalize.css">
+  <link rel="stylesheet" href="assets/skeleton.css">
+  <link rel="stylesheet" href="assets/custom.css">
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+
+  <script>
+  window.onload = function() {
+    document.querySelector('#regionchooser').onclick = function() {
+      document.querySelector('ul#regions').classList.toggle('hidden')
+    };
+    document.querySelector('#categorychooser').onclick = function() {
+      document.querySelector('ul#categories').classList.toggle('hidden')
+    };
+  };
+  </script>
+</head>
+
+<body>
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+    <div class="row">
+      <div class="one-half column" style="margin-top: 25%">
+        <h4>{{.PageTitle}}</h4>
+        <button id="regionchooser" class="button-primary">Region</button>
+        <button id="categorychooser" class="button-primary">Kategori</button>
+
+<ul class="hidden" id="regions">
+  {{range .Regions}}
+  <li>{{.Name}}</li>
+  {{end}}
+</ul>
+
+<ul class="hidden" id="categories">
+  {{range .Categories}}
+  <li data-cid="{{.Id}}">{{.Name}}</li>
+  {{end}}
+</ul>
+      </div>
+    </div>
+  </div>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

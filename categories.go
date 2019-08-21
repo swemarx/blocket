@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
-	"time"
-	"strconv"
 	"github.com/gocolly/colly"
+	"strconv"
+	"time"
 )
 
 type category struct {
-	name string
-	id uint64
+	Name string
+	Id   uint64
 }
 
 type categories struct {
-	list []category
+	list        []category
 	lastUpdated int64
 }
 
@@ -24,8 +24,9 @@ func refreshCategories(uri string) {
 	scrapeCategories(uri)
 
 	// DEBUG
+	fmt.Printf("Discovered categories:\n")
 	for _, cat := range catList.list {
-		fmt.Printf("Name: %s Id: %d\n", cat.name, cat.id)
+		fmt.Printf("name: %s id: %d\n", cat.Name, cat.Id)
 	}
 }
 
@@ -36,7 +37,7 @@ func scrapeCategories(uri string) {
 	catList.list = nil
 
 	// Scrape 'em
-	c := colly.NewCollector()
+	c := colly.NewCollector(colly.UserAgent(userAgent))
 	c.OnHTML("select.search_category > option", forEachCategory)
 	c.Visit(uri)
 	catList.lastUpdated = time.Now().Unix()
@@ -49,9 +50,9 @@ func forEachCategory(e *colly.HTMLElement) {
 		return
 	}
 
+	name := e.Text
 	value := e.Attr("value")
-	name  := e.Text
-	//fmt.Printf("Found matching option name=%s, value=%s\n", name, value)
+	//fmt.Printf("Found potential option name=%s, value=%s\n", name, value)
 
 	// Some options are just placeholders, dont add those
 	if name != "" {
@@ -61,7 +62,7 @@ func forEachCategory(e *colly.HTMLElement) {
 			fmt.Println("Could not parse category-id")
 			return
 		}
-		catList.list = append(catList.list, category{name: name, id: id})
+		catList.list = append(catList.list, category{Name: name, Id: id})
 	}
 }
 
