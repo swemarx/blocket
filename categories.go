@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"strconv"
+	"time"
 
 	"github.com/gocolly/colly"
 )
@@ -24,11 +24,11 @@ func refreshCategories(uri string) {
 	scrapeCategories(uri)
 
 	/*
-	// DEBUG
-	fmt.Printf("Discovered categories:\n")
-	for _, cat := range catList.list {
-		fmt.Printf("name: %s id: %d\n", cat.Name, cat.Id)
-	}
+		// DEBUG
+		fmt.Printf("Discovered categories:\n")
+		for _, cat := range catList.list {
+			fmt.Printf("name: %s id: %d\n", cat.Name, cat.Id)
+		}
 	*/
 }
 

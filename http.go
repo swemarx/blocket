@@ -33,5 +33,5 @@ func startHttpServer(listenPort int) {
 	})
 
 	fmt.Printf("startHttpServer(): listening to port %d\n", listenPort)
-	http.ListenAndServe(":" + strconv.Itoa(listenPort), nil)
+	http.ListenAndServe(":"+strconv.Itoa(listenPort), nil)
 }

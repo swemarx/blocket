@@ -23,11 +23,11 @@ func refreshRegions(uri string) {
 	scrapeRegions(uri)
 
 	/*
-	// DEBUG
-	fmt.Printf("Discovered regions:\n")
-	for _, reg := range regList.list {
-		fmt.Printf("name: %s, uri: %s\n", reg.Name, reg.uri)
-	}
+		// DEBUG
+		fmt.Printf("Discovered regions:\n")
+		for _, reg := range regList.list {
+			fmt.Printf("name: %s, uri: %s\n", reg.Name, reg.uri)
+		}
 	*/
 }
 

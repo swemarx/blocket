@@ -1,24 +1,25 @@
 package main
 
 import (
-	"os"
 	"fmt"
+	"os"
 
 	"github.com/BurntSushi/toml"
 )
 
 type Config struct {
-	Sitename		string
-	Useragent		string
-	CategoriesUri	string
-	RegionsUri		string
-	MaxAge			uint
-	Port			uint
-	Debug			bool
+	Sitename      string
+	Useragent     string
+	CategoriesUri string
+	RegionsUri    string
+	MaxAge        uint
+	Port          uint
+	Debug         bool
+	Sqlite        string
 }
 
 // Reads info from config file
-func ReadConfig(configFilename string) Config {
+func readConfig(configFilename string) Config {
 	_, err := os.Stat(configFilename)
 	if err != nil {
 		fmt.Println("Config file is missing: ", configFilename)

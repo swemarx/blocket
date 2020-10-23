@@ -14,7 +14,7 @@ GO_FLAGS    = -ldflags "$(GO_LDFLAGS)"
 all: blocket
 
 blocket: *.go
-	CGO_ENABLED=0 $(GO_BUILD) -o blocket $(GO_FLAGS) *.go
+	CGO_ENABLED=1 $(GO_BUILD) -o blocket $(GO_FLAGS) *.go
 
 .PHONY: clean
 clean:
